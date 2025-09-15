@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Navbar = () => {
   return (
@@ -7,14 +8,16 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center items-center h-20">
           <div className="flex-shrink-0">
-            <Image
-              src="/Logo.svg"
-              alt="Asurifii Logo"
-              width={180}
-              height={40}
-              priority
-              className="h-7 w-auto"
-            />
+            <Link href="/" className="block">
+              <Image
+                src="/Logo.svg"
+                alt="Asurifii Logo"
+                width={180}
+                height={40}
+                priority
+                className="h-10 w-auto cursor-pointer"
+              />
+            </Link>
           </div>
         </div>
       </div>

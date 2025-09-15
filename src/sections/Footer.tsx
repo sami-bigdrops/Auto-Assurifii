@@ -24,13 +24,15 @@ const Footer = () => {
         {/* Top Section - Logo and Disclaimer */}
         <div className='mb-8'>
           <div className='flex items-center mb-4'>
-            <Image
-              src='/Logo.svg'
-              alt='Assurifii Logo'
-              width={120}
-              height={30}
-              className='h-6 w-auto'
-            />
+            <Link href="/" className="block">
+              <Image
+                src='/Logo.svg'
+                alt='Assurifii Logo'
+                width={120}
+                height={30}
+                className='h-6 w-auto cursor-pointer'
+              />
+            </Link>
           </div>
           <p className='text-md text-gray-700 max-w-3xl leading-relaxed'>
             For quality control purposes, your activity on this site may be monitored or recorded by Assurifii or its service providers.

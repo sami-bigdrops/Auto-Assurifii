@@ -73,10 +73,10 @@ const Hero = () => {
       tid: '3108'
     })
 
-    // Add UTM parameters if they exist
-    if (utmSource) params.set('utm_source', utmSource)
-    if (utmId) params.set('utm_id', utmId)
-    if (utmS1) params.set('utm_s1', utmS1)
+    // Map UTM parameters to affiliate tracking parameters
+    if (utmSource) params.set('subid', utmSource)
+    if (utmId) params.set('subid2', utmId)
+    if (utmS1) params.set('c1', utmS1)
 
     const redirectUrl = `${baseUrl}/form?${params.toString()}`
     

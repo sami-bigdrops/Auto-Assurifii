@@ -31,7 +31,7 @@ const Partners = () => {
     ]
 
   return (
-    <div className='w-full py-16 min-h-content flex flex-col relative'>
+    <div className='w-full py-0 pt-40 md:pt-20 pb-16 lg:pb-0 lg:pt-0 lg:py-16 min-h-content flex flex-col relative'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
             <h2 className='text-lg font-base text-center'>We Partner With Top Providers</h2>
         </div>

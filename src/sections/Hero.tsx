@@ -54,10 +54,19 @@ const Hero = () => {
 
   // Function to handle redirect
   const handleContinue = () => {
+    // Validate ZIP code is exactly 5 digits
+    if (!/^\d{5}$/.test(zipCode)) {
+      alert('Please enter a valid 5-digit ZIP code')
+      return
+    }
+
     // Get parameters from cookies
     const affiliateId = getCookie('affiliate_id') || ''
     const transactionId = getCookie('transaction_id') || ''
     const sub1 = getCookie('sub1') || ''
+    const utmSource = getCookie('utm_source') || ''
+    const utmId = getCookie('utm_id') || ''
+    const utmS1 = getCookie('utm_s1') || ''
 
     // Build the redirect URL
     const baseUrl = 'https://quote.assurifii.com'
@@ -69,6 +78,11 @@ const Hero = () => {
       subid2: transactionId,
       c1: sub1
     })
+
+    // Add UTM parameters if they exist
+    if (utmSource) params.set('utm_source', utmSource)
+    if (utmId) params.set('utm_id', utmId)
+    if (utmS1) params.set('utm_s1', utmS1)
 
     const redirectUrl = `${baseUrl}/form?${params.toString()}`
     
@@ -84,25 +98,25 @@ const Hero = () => {
   }
 
   return (
-    <div className='w-full py-20 min-h-content sm:min-h-[800px] xl:min-h-[400px]  bg-gradient-to-b from-[#8EC4F6] to-[#FFF] flex flex-col relative'>
+    <div className='w-full min-h-content sm:min-h-[800px] xl:min-h-[400px] bg-gradient-to-b from-[#8EC4F6] to-[#FFF] flex flex-col relative pb-20 lg:py-20'>
       {/* Background Illustration */}
-      <div className='absolute right-0 top-3/4 lg:top-1/2 sm:top-1/2 transform lg:-translate-y-1/2 z-0'>
+        <div className='absolute right-0 top-[85%] xl:top-1/2 md:top-1/2 transform lg:-translate-y-1/2 z-0'>
         <Image
           src='/landing-illustration.svg'
           alt='Modern city skyline with eco-friendly buildings'
           width={800}
           height={600}
-          className='h-auto max-h-[500px] sm:max-h-[300px] xl:max-h-[500px]'
+          className='w-full h-auto max-h-[800px] sm:max-h-[300px] lg:max-h-[600px] xl:max-h-[500px]'
           priority
         />
       </div>
 
-      {/* Main Content Section */}
-      <div className='w-full flex-1 flex items-start sm:items-start lg:items-center justify-center lg:justify-start px-8 sm:px-24 lg:px-32 py-12 relative z-10'>
+        {/* Main Content Section */}
+        <div className='w-full flex-1 flex items-start justify-center lg:justify-start px-8 sm:px-24 lg:px-32 xl:py-12 py-8 relative z-10'>
         <div className='w-full'>
           {/* Content */}
-          <div className='max-w-2xl space-y-8 mx-auto lg:mx-0'>
-            <h1 className='text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1E3A8A] leading-tight text-center lg:text-left'>
+          <div className='max-w-2xl space-y-8 mx-auto lg:mx-0 py-0 lg:py-16'>
+            <h1 className='text-[32px] font-[800] text-[#12266D] leading-tight text-center lg:text-left max-w-[360px] lg:max-w-none mx-auto lg:mx-0'>
               {isLoadingLocation ? (
                 'Let\'s drop your rate today!'
               ) : cityName ? (
@@ -112,39 +126,88 @@ const Hero = () => {
               )}
             </h1>
             
-            <div className='bg-[#1E3A8A] rounded-xl p-6 sm:p-8 max-w-lg mx-auto lg:mx-0 shadow-2xl'>
-              <p className='text-white text-lg sm:text-xl font-semibold mb-6 text-center lg:text-left'>
+            <div className='bg-[#12266D] rounded-xl p-6 sm:p-8 max-w-2xl mx-auto lg:mx-0 shadow-2xl'>
+              <p className='text-white font-[800] text-[18px] mb-6'>
                 What is your ZIP Code?
               </p>
-              <div className='relative'>
+              
+              {/* Mobile: Stacked layout */}
+              <div className='block sm:hidden space-y-4'>
                 <input
                   type='text'
-                  placeholder={isLoadingLocation ? 'Detecting your location...' : 'Enter your ZIP code'}
+                  placeholder={isLoadingLocation ? 'Detecting your location...' : 'Zip Code e.g. 11102'}
                   value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    // Only allow digits and limit to 5 characters
+                    if (/^\d{0,5}$/.test(value)) {
+                      setZipCode(value)
+                    }
+                  }}
                   onKeyPress={handleKeyPress}
                   disabled={isLoadingLocation}
-                  className={`w-full px-4 py-4 pr-36 text-gray-900 text-lg rounded-lg border-2 border-transparent bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all duration-200 h-14 ${
+                  className={`w-full px-4 py-4 text-gray-900 text-[18px] font-[600] rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all duration-200 h-14 ${
                     isLoadingLocation ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 />
                 <button 
                   onClick={handleContinue}
-                  disabled={isLoadingLocation}
-                  className={`absolute right-1 top-1 px-6 py-3 rounded-md font-semibold transition-all duration-200 flex items-center gap-2 text-sm sm:text-base shadow-lg hover:shadow-xl transform hover:scale-105 h-12 ${
-                    isLoadingLocation 
+                  disabled={isLoadingLocation || !/^\d{5}$/.test(zipCode)}
+                  className={`w-full px-4 py-4 rounded-lg font-[600] transition-all duration-200 flex items-center justify-center gap-2 text-[18px] h-14 text-white ${
+                    isLoadingLocation || !/^\d{5}$/.test(zipCode)
                       ? 'bg-gray-400 cursor-not-allowed' 
-                      : 'bg-orange-500 hover:bg-orange-600'
+                      : 'bg-[#F7782B] hover:bg-[#e06c27]'
                   }`}
                 >
                   {isLoadingLocation ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin text-white font-[800]"></div>
                       Loading...
                     </>
                   ) : (
                     <>
-                      Continue <ArrowRight className='w-4 h-4' />
+                      Continue <ArrowRight className='w-4 h-4 text-white font-[600]' />
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Tablet and Desktop: Button inside input */}
+              <div className='hidden sm:block relative'>
+                <input
+                  type='text'
+                  placeholder={isLoadingLocation ? 'Detecting your location...' : 'Zip Code e.g. 11102'}
+                  value={zipCode}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    // Only allow digits and limit to 5 characters
+                    if (/^\d{0,5}$/.test(value)) {
+                      setZipCode(value)
+                    }
+                  }}
+                  onKeyPress={handleKeyPress}
+                  disabled={isLoadingLocation}
+                  className={`w-full px-4 py-4 pr-32 text-gray-900 text-[18px] font-[600] rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-all duration-200 h-18 ${
+                    isLoadingLocation ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                />
+                <button 
+                  onClick={handleContinue}
+                  disabled={isLoadingLocation || !/^\d{5}$/.test(zipCode)}
+                  className={`absolute right-0 top-0 px-14 py-2 rounded-r-lg font-[600] transition-all duration-200 flex items-center gap-2 text-[18px] h-18 text-white ${
+                    isLoadingLocation || !/^\d{5}$/.test(zipCode)
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-[#F7782B] hover:bg-[#e06c27]'
+                  }`}
+                >
+                  {isLoadingLocation ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin text-white font-[800]"></div>
+                      Loading...
+                    </>
+                  ) : (
+                    <>
+                      Continue <ArrowRight className='w-4 h-4 text-white font-[600]' />
                     </>
                   )}
                 </button>

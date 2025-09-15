@@ -5,7 +5,7 @@ const Testimonials = () => {
         {
             name: 'Fernando E.',
             address: 'Hamden, Connecticut',
-            testimonial: 'The site helped us narrow down which insurers to look for. I liked that it&apos;s a one stop shop, you go to one place, and put in what you&apos;re looking for. This is more helpful than trying to navigate all the different insurance companies that are out there on our own.'
+            testimonial: 'The site helped us narrow down which insurers to look for. I liked that it\'s a one stop shop, you go to one place, and put in what you\'re looking for. This is more helpful than trying to navigate all the different insurance companies that are out there on our own.'
         },
         {
             name: 'Ankica B.',
@@ -15,7 +15,7 @@ const Testimonials = () => {
         {
             name: 'Jaymee H.',
             address: 'Lakewood, Colorado',
-            testimonial: 'The site worked well for me. I was satisfied with my new insurance policy, which is $75 cheaper per month. It was an easy process, I didn&apos;t really have to do a lot, I just had to fill up my information.'
+            testimonial: 'The site worked well for me. I was satisfied with my new insurance policy, which is $75 cheaper per month. It was an easy process, I didn\'t really have to do a lot, I just had to fill up my information.'
         }
     ]
     
@@ -29,15 +29,15 @@ const Testimonials = () => {
                 {/* Desktop Grid */}
                 <div className='hidden lg:grid grid-cols-3 gap-8 w-full'>
                     {testimonials.map((testimonial, index) => (
-                        <div key={index} className='bg-white rounded-lg p-6 shadow-sm border border-gray-200 flex flex-col h-[280px]'>
-                            <p className='text-gray-800 text-base leading-relaxed mb-4 flex-grow'>
-                                &quot;{testimonial.testimonial}&quot;
-                            </p>
-                            <div className='text-sm mt-auto'>
+                        <article key={index} className='bg-white rounded-lg p-6 shadow-sm border border-gray-200 flex flex-col min-h-[280px]'>
+                            <blockquote className='text-gray-800 text-base leading-relaxed mb-6 flex-grow'>
+                                &ldquo;{testimonial.testimonial}&rdquo;
+                            </blockquote>
+                            <footer className='text-sm mt-auto'>
                                 <p className='font-semibold text-gray-900'>{testimonial.name}</p>
                                 <p className='text-gray-600'>{testimonial.address}</p>
-                            </div>
-                        </div>
+                            </footer>
+                        </article>
                     ))}
                 </div>
 
@@ -45,15 +45,15 @@ const Testimonials = () => {
                 <div className='lg:hidden overflow-x-auto scrollbar-hide w-full'>
                     <div className='flex gap-6 pb-4' style={{ width: 'max-content' }}>
                         {testimonials.map((testimonial, index) => (
-                            <div key={index} className='bg-white rounded-lg p-6 shadow-sm border border-gray-200 min-w-[300px] max-w-[350px] flex-shrink-0 flex flex-col h-[280px]'>
-                                <p className='text-gray-800 text-base leading-relaxed mb-4 flex-grow'>
-                                    &quot;{testimonial.testimonial}&quot;
-                                </p>
-                                <div className='text-sm mt-auto'>
+                            <article key={index} className='bg-white rounded-lg p-6 shadow-sm border border-gray-200 min-w-[300px] max-w-[350px] flex-shrink-0 flex flex-col min-h-[280px]'>
+                                <blockquote className='text-gray-800 text-base leading-relaxed mb-6 flex-grow'>
+                                    &ldquo;{testimonial.testimonial}&rdquo;
+                                </blockquote>
+                                <footer className='text-sm mt-auto'>
                                     <p className='font-semibold text-gray-900'>{testimonial.name}</p>
                                     <p className='text-gray-600'>{testimonial.address}</p>
-                                </div>
-                            </div>
+                                </footer>
+                            </article>
                         ))}
                     </div>
                 </div>

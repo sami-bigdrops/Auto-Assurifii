@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next"
+import TrackingHandler from "@/components/TrackingHandler";
 import "./globals.css";
 
   const mulish = Mulish({
@@ -36,6 +37,7 @@ export default function RootLayout({
       <body
         className={`${mulish.variable} antialiased h-full`}
       >
+        <TrackingHandler />
         {children}
         <Analytics />
       </body>

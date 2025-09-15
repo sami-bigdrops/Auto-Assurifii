@@ -25,6 +25,11 @@ const TrackingHandler = () => {
           
           if (result.success) {
             console.log('Tracking cookies set successfully')
+            
+            // Clean the URL by removing tracking parameters
+            const cleanUrl = window.location.origin + window.location.pathname
+            window.history.replaceState({}, document.title, cleanUrl)
+            console.log('URL cleaned successfully')
           }
         } catch (error) {
           console.error('Failed to set tracking cookies:', error)

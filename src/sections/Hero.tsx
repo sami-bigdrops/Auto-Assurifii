@@ -60,10 +60,7 @@ const Hero = () => {
       return
     }
 
-    // Get parameters from cookies
-    const affiliateId = getCookie('affiliate_id') || ''
-    const transactionId = getCookie('transaction_id') || ''
-    const sub1 = getCookie('sub1') || ''
+    // Get UTM parameters from cookies
     const utmSource = getCookie('utm_source') || ''
     const utmId = getCookie('utm_id') || ''
     const utmS1 = getCookie('utm_s1') || ''
@@ -73,10 +70,7 @@ const Hero = () => {
     const params = new URLSearchParams({
       zip_code: zipCode,
       referrer: 'auto.assurifii.com',
-      tid: '3108',
-      subid: affiliateId,
-      subid2: transactionId,
-      c1: sub1
+      tid: '3108'
     })
 
     // Add UTM parameters if they exist

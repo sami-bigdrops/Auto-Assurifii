@@ -46,6 +46,8 @@ export async function POST(request: NextRequest) {
       lp_campaign_id: process.env.LEADPROSPER_CAMPAIGN_ID,
       lp_supplier_id: process.env.LEADPROSPER_SUPPLIER_ID,
       lp_key: process.env.LEADPROSPER_API_KEY,
+      lp_subid1: '',
+      lp_subid2: '',
       first_name: firstName.trim(),
       last_name: lastName.trim(),
       email: email.trim(),
@@ -55,12 +57,6 @@ export async function POST(request: NextRequest) {
       user_agent: request.headers.get('user-agent') || '',
       landing_page_url: request.headers.get('referer') || '',
     };
-
-    // Log form submission for monitoring (production logging)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Form submission received:', { firstName, lastName, email, subject, message })
-      console.log('🔍 Full form data being sent to LeadProsper:', formData)
-    }
 
     // Send to LeadProsper
     const API_URL = process.env.LEADPROSPER_API_URL

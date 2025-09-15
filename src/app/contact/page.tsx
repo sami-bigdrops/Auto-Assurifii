@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Navbar from '@/sections/Navbar'
 import Footer from '@/sections/Footer'
-import { Send, Mail, Phone, MapPin, AlertCircle } from 'lucide-react'
+import { Send, Mail, MapPin, AlertCircle } from 'lucide-react'
 
 interface FormErrors {
   firstName?: string
@@ -24,6 +24,11 @@ const Contact = () => {
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [toast, setToast] = useState<{ show: boolean; message: string; type: 'success' | 'error' }>({
+    show: false,
+    message: '',
+    type: 'success'
+  })
 
   // Validation functions
   const validateField = (name: string, value: string): string => {
@@ -102,6 +107,13 @@ const Contact = () => {
     }))
   }
 
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ show: true, message, type })
+    setTimeout(() => {
+      setToast(prev => ({ ...prev, show: false }))
+    }, 5000)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -112,22 +124,39 @@ const Contact = () => {
     
     setIsSubmitting(true)
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    // Reset form
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      subject: '',
-      message: ''
-    })
-    setErrors({})
-    setIsSubmitting(false)
-    
-    // Show success message (you can implement a toast notification here)
-    alert('Thank you for your message! We will get back to you soon.')
+    try {
+      const response = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+
+      if (response.ok && result.success) {
+        // Reset form on success
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          subject: '',
+          message: ''
+        })
+        setErrors({})
+        showToast('Thank you for your message! We will get back to you soon.', 'success')
+      } else {
+        // Handle API errors
+        const errorMessage = result.error || 'Failed to submit form. Please try again.'
+        showToast(errorMessage, 'error')
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      showToast('Network error. Please check your connection and try again.', 'error')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   // Error message component
@@ -159,6 +188,40 @@ const Contact = () => {
   return (
     <main className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
+      
+      {/* Toast Notification */}
+      {toast.show && (
+        <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-right-5 duration-300">
+          <div className={`px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 ${
+            toast.type === 'success' 
+              ? 'bg-green-500 text-white' 
+              : 'bg-red-500 text-white'
+          }`}>
+            <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+              toast.type === 'success' ? 'bg-green-600' : 'bg-red-600'
+            }`}>
+              {toast.type === 'success' ? (
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              )}
+            </div>
+            <span className="font-medium">{toast.message}</span>
+            <button
+              onClick={() => setToast(prev => ({ ...prev, show: false }))}
+              className="ml-2 text-white hover:text-gray-200 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
       
       <div className="flex-1 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">

@@ -70,7 +70,7 @@ const Hero = () => {
       c1: sub1
     })
 
-    const redirectUrl = `${baseUrl}?${params.toString()}`
+    const redirectUrl = `${baseUrl}/form?${params.toString()}`
     
     // Redirect to the quote page
     window.location.href = redirectUrl

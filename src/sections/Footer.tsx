@@ -17,6 +17,10 @@ const Footer = () => {
             name: 'Contact',
             link: '/contact'
         },
+        {
+            name: 'Unsubscribe',
+            link: 'https://www.camerakeyframe.com/o-jqrh-u57-ea429e28532daa82725604a3a968fd78'
+        },
     ]
   return (
     <footer className='w-full bg-white py-12'>

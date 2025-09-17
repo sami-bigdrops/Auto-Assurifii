@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Navbar from '@/sections/Navbar'
 import Footer from '@/sections/Footer'
-import { Send, Mail, MapPin, AlertCircle } from 'lucide-react'
+import { Send, Mail, MapPin, AlertCircle, Linkedin } from 'lucide-react'
 
 interface FormErrors {
   firstName?: string
@@ -269,6 +269,25 @@ const Contact = () => {
                     <h3 className="text-base font-semibold text-gray-900">Office</h3>
                     <p className="text-sm text-gray-600">1985 Del Amo Blvd #P2150</p>
                     <p className="text-sm text-gray-600">Torrance, CA, 90501</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#1E3A8A] rounded-lg flex items-center justify-center">
+                      <Linkedin className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold text-gray-900">LinkedIn</h3>
+                    <a 
+                      href="https://www.linkedin.com/company/assurifii/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-sm text-[#1E3A8A] hover:text-[#1E3A8A]/80 transition-colors"
+                    >
+                      Follow us on LinkedIn
+                    </a>
                   </div>
                 </div>
               </div>

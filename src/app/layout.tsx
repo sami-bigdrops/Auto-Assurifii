@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import TrackingHandler from "@/components/TrackingHandler";
 import "./globals.css";
 
@@ -40,6 +41,7 @@ export default function RootLayout({
         <TrackingHandler />
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

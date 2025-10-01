@@ -1,19 +1,25 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 
 const Hero = () => {
   const [zipCode, setZipCode] = useState('')
   const [cityName, setCityName] = useState('')
-  const [isLoadingLocation, setIsLoadingLocation] = useState(true)
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false)
 
   // Function to fetch user location using server-side IP detection (same as LeadProsper)
-  const fetchUserLocation = async () => {
+  const fetchUserLocation = useCallback(async () => {
     try {
+      setIsLoadingLocation(true)
       // Use our API route that uses the same IP detection method as LeadProsper
-      const response = await fetch('/api/get-location')
+      const response = await fetch('/api/get-location', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       
       if (!response.ok) {
         throw new Error(`API returned ${response.status}: ${response.statusText}`)
@@ -36,12 +42,21 @@ const Hero = () => {
     } finally {
       setIsLoadingLocation(false)
     }
-  }
-
-  // Fetch location on component mount
-  useEffect(() => {
-    fetchUserLocation()
   }, [])
+
+  // Fetch location after initial render to avoid blocking FCP
+  useEffect(() => {
+    // Use requestIdleCallback for better performance, fallback to setTimeout
+    const scheduleLocationFetch = () => {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => fetchUserLocation(), { timeout: 2000 })
+      } else {
+        setTimeout(() => fetchUserLocation(), 100)
+      }
+    }
+    
+    scheduleLocationFetch()
+  }, [fetchUserLocation])
 
   // Function to get cookie value
   const getCookie = (name: string): string | null => {
@@ -94,14 +109,17 @@ const Hero = () => {
   return (
     <div className='w-full min-h-content sm:min-h-[800px] xl:min-h-[400px] bg-gradient-to-b from-[#8EC4F6] to-[#FFF] flex flex-col relative pb-20 lg:py-20'>
       {/* Background Illustration */}
-        <div className='absolute right-0 top-[85%] xl:top-1/2 md:top-1/2 transform lg:-translate-y-1/2 z-0'>
+        <div className='w-full absolute right-0 top-[85%] xl:top-1/2 md:top-1/2 transform lg:-translate-y-1/2 z-0 max-w-3xl mx-auto'>
         <Image
+          width={1000}
+          height={1000}
           src='/landing-illustration.svg'
           alt='Modern city skyline with eco-friendly buildings'
-          width={800}
-          height={600}
-          className='w-full h-auto max-h-[800px] sm:max-h-[300px] lg:max-h-[600px] xl:max-h-[500px]'
+          className='w-full h-auto max-h-[1000px] sm:max-h-[400px] lg:max-h-[700px] xl:max-h-[700px] object-contain'
           priority
+          quality={90}
+          loading="eager"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
 
@@ -111,13 +129,7 @@ const Hero = () => {
           {/* Content */}
           <div className='max-w-2xl space-y-8 mx-auto lg:mx-0 py-0 lg:py-16'>
             <h1 className='text-[32px] font-[800] text-[#12266D] leading-tight text-center lg:text-left max-w-[360px] lg:max-w-none mx-auto lg:mx-0'>
-              {isLoadingLocation ? (
-                'Let\'s drop your rate today!'
-              ) : cityName ? (
-                `Let's drop your rate in ${cityName} today!`
-              ) : (
-                'Let\'s drop your rate today!'
-              )}
+              Let&apos;s drop your rate{cityName ? ` in ${cityName}` : ''} today!
             </h1>
             
             <div className='bg-[#12266D] rounded-xl p-6 sm:p-8 max-w-2xl mx-auto lg:mx-0 shadow-2xl'>

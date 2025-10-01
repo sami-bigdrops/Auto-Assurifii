@@ -15,6 +15,8 @@ const Navbar = () => {
                 width={180}
                 height={40}
                 priority
+                quality={90}
+                loading="eager"
                 className="h-10 w-auto cursor-pointer"
               />
             </Link>

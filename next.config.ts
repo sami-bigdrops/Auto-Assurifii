@@ -14,8 +14,11 @@ const nextConfig: NextConfig = {
   
   // Enable experimental features for better performance
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: ['lucide-react', '@vercel/analytics', '@vercel/speed-insights'],
   },
+  
+  // Enable static generation for better performance
+  output: 'standalone',
   
   // Headers for better caching and performance
   async headers() {
@@ -42,11 +45,20 @@ const nextConfig: NextConfig = {
         ]
       },
       {
-        source: '/api/(.*)',
+        source: '/api/get-location',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=300, s-maxage=300'
+            value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400'
+          }
+        ]
+      },
+      {
+        source: '/api/(set-tracking-cookies|submit-form)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, no-cache, must-revalidate'
           }
         ]
       },

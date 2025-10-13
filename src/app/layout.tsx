@@ -54,6 +54,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="//quote.assurifii.com" />
+        <link rel="dns-prefetch" href="//vercel-analytics.com" />
+        <link rel="dns-prefetch" href="//vitals.vercel-insights.com" />
         <link rel="preload" href="/landing-illustration.svg" as="image" type="image/svg+xml" />
         <link rel="preload" href="/Logo.svg" as="image" type="image/svg+xml" />
       </head>

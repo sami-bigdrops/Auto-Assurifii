@@ -2,26 +2,27 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const Footer = () => {
+// Move footer links outside component to prevent recreation on each render
+const footerLinks = [
+    {
+        name: 'Terms of use',
+        link: '/terms-of-use'
+    },
+    {
+        name: 'Privacy Policy',
+        link: '/privacy-policy'
+    },
+    {
+        name: 'Contact',
+        link: '/contact'
+    },
+    // {
+    //     name: 'Unsubscribe',
+    //     link: 'https://www.camerakeyframe.com/o-jqrh-u57-ea429e28532daa82725604a3a968fd78'
+    // },
+]
 
-    const footerLinks = [
-        {
-            name: 'Terms of use',
-            link: '/terms-of-use'
-        },
-        {
-            name: 'Privacy Policy',
-            link: '/privacy-policy'
-        },
-        {
-            name: 'Contact',
-            link: '/contact'
-        },
-        // {
-        //     name: 'Unsubscribe',
-        //     link: 'https://www.camerakeyframe.com/o-jqrh-u57-ea429e28532daa82725604a3a968fd78'
-        // },
-    ]
+const Footer = () => {
   return (
     <footer className='w-full bg-white py-12'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -35,6 +36,7 @@ const Footer = () => {
                 width={120}
                 height={30}
                 className='h-6 w-auto cursor-pointer'
+                loading="lazy"
               />
             </Link>
           </div>
@@ -59,4 +61,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default React.memo(Footer)

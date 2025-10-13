@@ -1,24 +1,25 @@
 import React from 'react'
 
+// Move testimonials data outside component to prevent recreation on each render
+const testimonials = [
+    {
+        name: 'Fernando E.',
+        address: 'Hamden, Connecticut',
+        testimonial: 'The site helped us narrow down which insurers to look for. I liked that it\'s a one stop shop, you go to one place, and put in what you\'re looking for. This is more helpful than trying to navigate all the different insurance companies that are out there on our own.'
+    },
+    {
+        name: 'Ankica B.',
+        address: 'Fairfax County, Virginia',
+        testimonial: 'I loved it because I save a lot of money, almost $500 per month! I kept full coverage on all of my cars. The people I spoke to were very nice and helpful, and I was able to bundle my homeowner insurance too.'
+    },
+    {
+        name: 'Jaymee H.',
+        address: 'Lakewood, Colorado',
+        testimonial: 'The site worked well for me. I was satisfied with my new insurance policy, which is $75 cheaper per month. It was an easy process, I didn\'t really have to do a lot, I just had to fill up my information.'
+    }
+]
+
 const Testimonials = () => {
-    const testimonials = [
-        {
-            name: 'Fernando E.',
-            address: 'Hamden, Connecticut',
-            testimonial: 'The site helped us narrow down which insurers to look for. I liked that it\'s a one stop shop, you go to one place, and put in what you\'re looking for. This is more helpful than trying to navigate all the different insurance companies that are out there on our own.'
-        },
-        {
-            name: 'Ankica B.',
-            address: 'Fairfax County, Virginia',
-            testimonial: 'I loved it because I save a lot of money, almost $500 per month! I kept full coverage on all of my cars. The people I spoke to were very nice and helpful, and I was able to bundle my homeowner insurance too.'
-        },
-        {
-            name: 'Jaymee H.',
-            address: 'Lakewood, Colorado',
-            testimonial: 'The site worked well for me. I was satisfied with my new insurance policy, which is $75 cheaper per month. It was an easy process, I didn\'t really have to do a lot, I just had to fill up my information.'
-        }
-    ]
-    
     return (
         <div className='w-full py-16 bg-[#F7F7F7]'>
             <div className='w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -62,4 +63,4 @@ const Testimonials = () => {
     )
 }
 
-export default Testimonials
+export default React.memo(Testimonials)

@@ -2,6 +2,17 @@ import React from 'react'
 import Navbar from '@/sections/Navbar'
 import Footer from '@/sections/Footer'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+// Static page optimization
+export const dynamic = 'force-static'
+export const revalidate = 86400 // Revalidate daily
+
+export const metadata: Metadata = {
+  title: 'Terms of Use | Assurifii',
+  description: 'Read our Terms of Use to understand the rules and regulations for using Assurifii services.',
+  robots: 'index, follow',
+}
 
 export default function TermsOfUse() {
   return (

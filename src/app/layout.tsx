@@ -11,6 +11,8 @@ const mulish = Mulish({
   display: 'swap',
   preload: true,
   fallback: ['system-ui', 'arial'],
+  adjustFontFallback: true,
+  weight: ['400', '600', '700', '800'],
 });
 
 export const metadata: Metadata = {

@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// Use Edge Runtime for faster cold starts and better global performance
+export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
+
 // Cache for location data to improve TTFB
 interface LocationData {
   city: string;
@@ -10,7 +14,7 @@ interface LocationData {
 }
 
 const locationCache = new Map<string, { data: LocationData; timestamp: number }>()
-const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
+const CACHE_DURATION = 10 * 60 * 1000 // 10 minutes - increased for better performance
 
 export async function GET(request: NextRequest) {
   try {
@@ -23,8 +27,10 @@ export async function GET(request: NextRequest) {
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
       return NextResponse.json(cached.data, {
         headers: {
-          'Cache-Control': 'public, max-age=300, s-maxage=300',
+          'Cache-Control': 'public, max-age=600, s-maxage=600, stale-while-revalidate=3600',
           'Content-Type': 'application/json',
+          'CDN-Cache-Control': 'max-age=600',
+          'Vercel-CDN-Cache-Control': 'max-age=600',
         }
       })
     }
@@ -53,8 +59,10 @@ export async function GET(request: NextRequest) {
           locationCache.set(realIp, { data: locationData, timestamp: Date.now() })
           return NextResponse.json(locationData, {
             headers: {
-              'Cache-Control': 'public, max-age=300, s-maxage=300',
+              'Cache-Control': 'public, max-age=600, s-maxage=600, stale-while-revalidate=3600',
               'Content-Type': 'application/json',
+              'CDN-Cache-Control': 'max-age=600',
+              'Vercel-CDN-Cache-Control': 'max-age=600',
             }
           })
         }
@@ -73,8 +81,10 @@ export async function GET(request: NextRequest) {
       locationCache.set(ip, { data: emptyResult, timestamp: Date.now() })
       return NextResponse.json(emptyResult, {
         headers: {
-          'Cache-Control': 'public, max-age=300, s-maxage=300',
+          'Cache-Control': 'public, max-age=600, s-maxage=600, stale-while-revalidate=3600',
           'Content-Type': 'application/json',
+          'CDN-Cache-Control': 'max-age=600',
+          'Vercel-CDN-Cache-Control': 'max-age=600',
         }
       })
     }
@@ -83,8 +93,10 @@ export async function GET(request: NextRequest) {
     locationCache.set(ip, { data: locationData, timestamp: Date.now() })
     return NextResponse.json(locationData, {
       headers: {
-        'Cache-Control': 'public, max-age=300, s-maxage=300',
+        'Cache-Control': 'public, max-age=600, s-maxage=600, stale-while-revalidate=3600',
         'Content-Type': 'application/json',
+        'CDN-Cache-Control': 'max-age=600',
+        'Vercel-CDN-Cache-Control': 'max-age=600',
       }
     })
   } catch (error) {

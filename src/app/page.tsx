@@ -2,9 +2,9 @@ import dynamic from 'next/dynamic';
 import Hero from '@/sections/Hero';
 import Navbar from '@/sections/Navbar';
 
-// Force static generation for maximum performance
-export const dynamicParams = false;
-export const revalidate = 3600; // Revalidate every hour
+// Optimize for static generation and caching - revalidate every 2 hours
+export const revalidate = 7200
+export const fetchCache = 'force-cache'
 
 // Lazy load below-the-fold components to reduce initial bundle size
 const Partners = dynamic(() => import('@/sections/Partners'), {

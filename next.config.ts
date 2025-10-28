@@ -15,7 +15,13 @@ const nextConfig: NextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', '@vercel/analytics', '@vercel/speed-insights'],
+    // Enable response cache optimization
+    serverComponentsHmrCache: true,
   },
+  
+  // Optimize production builds
+  reactStrictMode: true,
+  poweredByHeader: false,
   
   // Enable static generation for better performance
   output: 'standalone',
@@ -41,6 +47,10 @@ const nextConfig: NextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
           }
         ]
       },
@@ -49,7 +59,11 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400'
+            value: 'public, max-age=600, s-maxage=600, stale-while-revalidate=3600'
+          },
+          {
+            key: 'CDN-Cache-Control',
+            value: 'max-age=600'
           }
         ]
       },

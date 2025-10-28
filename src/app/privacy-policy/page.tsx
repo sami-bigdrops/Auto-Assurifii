@@ -1,6 +1,17 @@
 import React from 'react'
 import Navbar from '@/sections/Navbar'
 import Footer from '@/sections/Footer'
+import type { Metadata } from 'next'
+
+// Static page optimization
+export const dynamic = 'force-static'
+export const revalidate = 86400 // Revalidate daily
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Assurifii',
+  description: 'Read our Privacy Policy to understand how Assurifii collects, uses, and protects your personal information.',
+  robots: 'index, follow',
+}
 
 export default function PrivacyPolicy() {
   return (

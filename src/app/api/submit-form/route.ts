@@ -1,24 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
+
+// Use Edge Runtime for better performance
+export const runtime = 'edge'
+
+// Validation schema using Zod for better type safety and performance
+const formSchema = z.object({
+  firstName: z.string().min(1, 'First name is required').max(50, 'First name too long'),
+  lastName: z.string().min(1, 'Last name is required').max(50, 'Last name too long'),
+  email: z.string().email('Invalid email address').max(100, 'Email too long'),
+  subject: z.string().min(1, 'Subject is required').max(200, 'Subject too long'),
+  message: z.string().min(1, 'Message is required').max(2000, 'Message too long'),
+})
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
-    const { firstName, lastName, email, subject, message } = body
-
-    // Validate required fields
-    if (!firstName || !lastName || !email || !subject || !message) {
-      const missingFields = [];
-      if (!firstName) missingFields.push('firstName');
-      if (!lastName) missingFields.push('lastName');
-      if (!email) missingFields.push('email');
-      if (!subject) missingFields.push('subject');
-      if (!message) missingFields.push('message');
+    // Validate request body with Zod for better performance and type safety
+    const validationResult = formSchema.safeParse(body)
+    
+    if (!validationResult.success) {
+      const errors = validationResult.error.errors.map(err => ({
+        field: err.path.join('.'),
+        message: err.message
+      }))
       return NextResponse.json(
-        { error: 'All fields are required', missingFields },
+        { error: 'Validation failed', validationErrors: errors },
         { status: 400 }
       )
     }
+    
+    const { firstName, lastName, email, subject, message } = validationResult.data
 
     // Get client IP address
     const forwarded = request.headers.get('x-forwarded-for')

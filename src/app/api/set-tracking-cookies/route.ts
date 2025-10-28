@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// Use Edge Runtime for faster response times
+export const runtime = 'edge'
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)

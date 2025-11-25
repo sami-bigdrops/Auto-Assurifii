@@ -1,34 +1,27 @@
-import dynamic from 'next/dynamic';
-import Hero from '@/sections/Hero';
-import Navbar from '@/sections/Navbar';
-
-// Optimize for static generation and caching - revalidate every 2 hours
-export const revalidate = 7200
-export const fetchCache = 'force-cache'
-
-// Lazy load below-the-fold components to reduce initial bundle size
-const Partners = dynamic(() => import('@/sections/Partners'), {
-  loading: () => <div className="w-full py-0 pt-40 md:pt-20 pb-16 lg:pb-0 lg:pt-0 lg:py-16 min-h-content" />,
-});
-
-const Testimonials = dynamic(() => import('@/sections/Testimonials'), {
-  loading: () => <div className="w-full py-16 bg-[#F7F7F7]" />,
-});
-
-const Footer = dynamic(() => import('@/sections/Footer'), {
-  loading: () => <div className="w-full bg-white py-12" />,
-});
+import { Wrench } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 export default function Home() {
   return (
-    <main className="h-screen flex flex-col overflow-hidden">
-      <div className="flex-1 overflow-y-auto">
-        {/* Content will go here - scroll will only appear if content exceeds viewport */}
-        <Navbar />
-        <Hero />
-        <Partners />
-        <Testimonials />
-        <Footer />
+    <main className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-blue-50">
+      <Navbar />
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center max-w-3xl">
+          <div className="flex flex-col items-center justify-center gap-4">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-100 rounded-full blur-2xl opacity-50"></div>
+              <div className="relative liner bg-[#3498DB] p-8 rounded-full shadow-lg">
+                <Wrench className="w-10 h-10 text-white" strokeWidth={2} />
+              </div>
+            </div>
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
+              The Site is Under Maintenance
+            </h1>
+            <p className="text-base md:text-md lg:text-lg text-gray-600 max-w-2xl mx-auto">
+              We&apos;ll be back soon. Thank you for your patience.
+            </p>
+          </div>
+        </div>
       </div>
     </main>
   );
